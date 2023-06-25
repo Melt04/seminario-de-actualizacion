@@ -1,17 +1,31 @@
 class UserHandler {
-  constructor (userRepository) {
-    this.repository = userRepository
+  constructor (db) {
+    this.db = db
   }
-  create (userData) {
-    return this.repository.createUser({ ...userData })
+
+  async create (userData) {
+    const { name, last_name, status } = userData
+    try {
+      const data = await this.db.query(
+        `CALL createUser('${name}','${last_name}')`
+      )
+      console.log(data)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   update (id, data) {
     return this.repository.updateUser(id, { ...data })
   }
 
-  get (id) {
-    return this.repository.getUser(id)
+  async getAllUsers () {
+    try {
+      const data = await this.db.query(`CALL selectAllUsers`)
+      return data[0]
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   delete (id) {
@@ -22,8 +36,13 @@ class UserHandler {
     return this.repository.getGroup(id)
   }
 
-  getIdByUserName (userName) {
-    return this.repository.getIdByUserName(userName)
+  async getIdById (id) {
+    try {
+      const data = await this.db.query(`CALL selectUserById (${id})`)
+      return data[0]
+    } catch (e) {
+      console.log(e)
+    }
   }
 }
 

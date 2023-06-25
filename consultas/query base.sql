@@ -138,11 +138,22 @@ DROP PROCEDURE IF EXISTS createUser;
 DROP PROCEDURE IF EXISTS selectAllUsers;
 DROP PROCEDURE IF EXISTS disableUser;
 DROP PROCEDURE IF EXISTS activeUser;
+DROP PROCEDURE IF EXISTS selectUserById;
 DELIMITER //
 //
 CREATE PROCEDURE  createUser(in name varchar(45),in last_name varchar(45))
 BEGIN
+DECLARE lastId INT DEFAULT 0;
+START TRANSACTION;
 insert into users(name, last_name) values(name,last_name);
+set lastId=LAST_INSERT_ID();
+insert into members(id_user,id_group) values (lastId,1);
+COMMIT;
+END
+//
+CREATE PROCEDURE  selectUserById(in id_in int)
+BEGIN
+select * from users where id=id_in
 END
 //
 CREATE PROCEDURE  selectAllUsers()
@@ -188,8 +199,6 @@ DROP PROCEDURE IF EXISTS addUserToGroup;
 DROP PROCEDURE IF EXISTS selectAllMembers;
 DROP PROCEDURE IF EXISTS removeUserFromGroup;
 
-
-
 DELIMITER //
 //
 CREATE PROCEDURE  addUserToGroup(in id_user int,in id_group int)
@@ -212,29 +221,12 @@ END
 //
 
 DELIMITER ;
+-- -----------------------------------------------------
+-- RESOURCES
+-- -----------------------------------------------------
 
-call addUserToGroup(1,2);
-call selectAllMembers();
-call removeUserFromGroup(1,1);
-
-delete from members where id_user=1 and id_group=2
-
-
-
-
-
-
-
-
-
--- resources
-
-USE `access-control`;
 DROP PROCEDURE IF EXISTS createResource;
 DROP PROCEDURE IF EXISTS selectAllResources;
-
-
-
 
 DELIMITER //
 //
@@ -252,22 +244,12 @@ END
 //
 
 DELIMITER ;
-call createResource('prueba','http');
-call selectAllResources()
+-- -----------------------------------------------------
+-- ACCESS
+-- -----------------------------------------------------
 
-
-
-
--- access
-
-USE `access-control`;
 DROP PROCEDURE IF EXISTS createAccess;
 DROP PROCEDURE IF EXISTS selectAllAccess;
-
-
-
-
-
 DELIMITER //
 //
 CREATE PROCEDURE  createAccess(in name varchar(45))
@@ -284,19 +266,14 @@ END
 //
 
 DELIMITER ;
-call selectAllAccess()
-call createAccess('avanzado')
 
+-- -----------------------------------------------------
+-- GROUP ACCESS
+-- -----------------------------------------------------
 
-
--- group access
-
-USE `access-control`;
 DROP PROCEDURE IF EXISTS assingAccessToGroup;
 DROP PROCEDURE IF EXISTS selectAllGroupsAccess;
 DROP PROCEDURE IF EXISTS removeAccessToGroup;
-
-
 
 DELIMITER //
 //
@@ -321,25 +298,13 @@ END
 //
 
 DELIMITER ;
+-- -----------------------------------------------------
+-- ACCESS RESOURCES
+-- -----------------------------------------------------
 
-call selectAllGroupsAccess()
-call assingAccessToGroup(1,4)
-call removeAccessToGroup(1,3)
-
-
-
-
-
--- access resources 
-
-
-
-USE `access-control`;
 DROP PROCEDURE IF EXISTS assignAccessToResource;
 DROP PROCEDURE IF EXISTS removeAccessToResource;
 DROP PROCEDURE IF EXISTS selectAllAccessToResource;
-
-
 
 DELIMITER //
 //
@@ -364,6 +329,9 @@ END
 
 //
 
+call createGroup('guest');
+call createAccess('basic');
+call assingAccessToGroup(1,1);
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

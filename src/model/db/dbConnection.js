@@ -1,8 +1,11 @@
 const mysql = require('mysql')
 
 class DataBaseHandler {
-  constructor (host, port, user, password, db) {
-    console.log(db)
+  constructor () {
+    this.connection = null
+  }
+
+  async connect (host, port, user, password, db) {
     this.connection = mysql.createConnection({
       host,
       port,
@@ -10,9 +13,7 @@ class DataBaseHandler {
       password,
       database: db
     })
-  }
 
-  async connect () {
     return new Promise((resolve, reject) => {
       this.connection.connect(error => {
         if (error) {
@@ -40,6 +41,4 @@ class DataBaseHandler {
   }
 }
 
-module.exports = {
-  DataBaseHandler
-}
+module.exports = new DataBaseHandler()
