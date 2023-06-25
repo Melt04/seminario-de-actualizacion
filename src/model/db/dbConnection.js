@@ -1,13 +1,14 @@
 const mysql = require('mysql')
 
-export class DataBaseHandler {
+class DataBaseHandler {
   constructor (host, port, user, password, db) {
+    console.log(db)
     this.connection = mysql.createConnection({
       host,
       port,
       user,
       password,
-      database
+      database: db
     })
   }
 
@@ -17,6 +18,7 @@ export class DataBaseHandler {
         if (error) {
           console.log(error)
           reject(new Error('Cant connect to db'))
+          return
         }
         console.log(`Connected`)
         resolve()
