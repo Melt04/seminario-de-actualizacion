@@ -2,6 +2,7 @@ const GroupHandler = require('../../../handlers/groupHandler')
 const dbHandler = require('../../../model/db/dbConnection')
 const Route = require('../../class/Route')
 const { getBodyFromRequest } = require('../../../utils')
+const Group = require('../../../model/entities/groups')
 
 const groupHandler = new GroupHandler(dbHandler)
 
@@ -11,10 +12,12 @@ const groupCreateRoute = new Route(
   async (req, res) => {
     try {
       body = await getBodyFromRequest(req)
-      await groupHandler.create({ name: body.name })
+      const group = new Group({ name: body.name })
+      await groupHandler.create(group)
       res.write(JSON.stringify({ message: 'Created Successfully' }))
       res.end()
     } catch (e) {
+      console.log(e)
       res.statusCode = 500
       res.write(JSON.stringify({ message: 'Failed to create group' }))
 

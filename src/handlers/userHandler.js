@@ -3,10 +3,10 @@ class UserHandler {
     this.db = db
   }
   async create (userData) {
-    const { name, last_name, status } = userData
+    const { name, lastName, status } = userData
     try {
       const data = await this.db.query(
-        `CALL createUser('${name}','${last_name}')`
+        `CALL createUser('${name}','${lastName}')`
       )
       console.log(data)
     } catch (e) {

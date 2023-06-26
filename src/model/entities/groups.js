@@ -1,5 +1,5 @@
 class Group {
-  constructor (name, enabled = true) {
+  constructor ({ name, enabled = true }) {
     this.name = name
     this.enabled = enabled
   }

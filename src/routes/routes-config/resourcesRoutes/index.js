@@ -1,9 +1,8 @@
 const ResourceHandler = require('../../../handlers/resourceHandler')
-
 const dbHandler = require('../../../model/db/dbConnection')
 const Route = require('../../class/Route')
 const { getBodyFromRequest } = require('../../../utils')
-
+const Resource = require('../../../model/entities/resource')
 const resourceHandler = new ResourceHandler(dbHandler)
 
 const resourceCreateRoute = new Route(
@@ -12,10 +11,12 @@ const resourceCreateRoute = new Route(
   async (req, res) => {
     try {
       body = await getBodyFromRequest(req)
-      await resourceHandler.create({ name: body.name, type: body.type })
+      const resource = new Resource({ name: body.name, type: body.type })
+      await resourceHandler.create(resource)
       res.write(JSON.stringify({ message: 'Created Successfully' }))
       res.end()
     } catch (e) {
+      console.log(e)
       res.statusCode = 500
       res.write(JSON.stringify({ message: 'Failed to create resource' }))
 

@@ -5,4 +5,4 @@ class User {
     this.status = status
   }
 }
-module.exports = { User }
+module.exports = User

@@ -1,6 +1,7 @@
 const UserHandler = require('../../../handlers/userHandler')
 const dbHandler = require('../../../model/db/dbConnection')
 const Route = require('../../class/Route')
+const User = require('../../../model/entities/users')
 const { getBodyFromRequest } = require('../../../utils')
 
 const userHandler = new UserHandler(dbHandler)
@@ -11,11 +12,13 @@ const userCreateRoute = new Route(
   async (req, res) => {
     try {
       body = await getBodyFromRequest(req)
-      await userHandler.create({ name: body.name, last_name: body.last_name })
+      const user = new User({ name: body.name, lastName: body.last_name })
+      await userHandler.create(user)
       res.write(JSON.stringify({ message: 'Created Successfully' }))
       res.end()
     } catch (e) {
       res.statusCode = 500
+      console.log(e)
       res.write(JSON.stringify({ message: 'Failed to create user' }))
 
       res.end()

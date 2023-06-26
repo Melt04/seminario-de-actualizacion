@@ -2,6 +2,7 @@ const AccessHandler = require('../../../handlers/accessHandler')
 const dbHandler = require('../../../model/db/dbConnection')
 const Route = require('../../class/Route')
 const { getBodyFromRequest } = require('../../../utils')
+const Access = require('../../../model/entities/access')
 
 const accessHandler = new AccessHandler(dbHandler)
 
@@ -11,10 +12,13 @@ const accessCreateRoute = new Route(
   async (req, res) => {
     try {
       body = await getBodyFromRequest(req)
-      await accessHandler.create({ name: body.name })
+      const access = new Access({ name: body.name })
+      await accessHandler.create(access)
       res.write(JSON.stringify({ message: 'Created Successfully' }))
       res.end()
     } catch (e) {
+      console.log(e)
+
       res.statusCode = 500
       res.write(JSON.stringify({ message: 'Failed to create access' }))
 
