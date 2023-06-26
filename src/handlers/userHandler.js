@@ -2,7 +2,6 @@ class UserHandler {
   constructor (db) {
     this.db = db
   }
-
   async create (userData) {
     const { name, last_name, status } = userData
     try {
@@ -12,6 +11,7 @@ class UserHandler {
       console.log(data)
     } catch (e) {
       console.log(e)
+      throw e
     }
   }
 
@@ -25,15 +25,8 @@ class UserHandler {
       return data[0]
     } catch (e) {
       console.log(e)
+      throw e
     }
-  }
-
-  delete (id) {
-    return this.repository.deleteUser(id)
-  }
-
-  getGroup (id) {
-    return this.repository.getGroup(id)
   }
 
   async getIdById (id) {
@@ -42,6 +35,7 @@ class UserHandler {
       return data[0]
     } catch (e) {
       console.log(e)
+      throw e
     }
   }
 }

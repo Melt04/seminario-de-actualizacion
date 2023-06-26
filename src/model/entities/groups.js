@@ -4,4 +4,4 @@ class Group {
     this.enabled = enabled
   }
 }
-module.exports = { Group }
+module.exports = Group

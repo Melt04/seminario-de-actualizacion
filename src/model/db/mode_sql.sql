@@ -1,3 +1,4 @@
+-- MySQL Workbench Forward Engineering
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
@@ -137,6 +138,7 @@ DROP PROCEDURE IF EXISTS createUser;
 DROP PROCEDURE IF EXISTS selectAllUsers;
 DROP PROCEDURE IF EXISTS disableUser;
 DROP PROCEDURE IF EXISTS activeUser;
+DROP PROCEDURE IF EXISTS selectUserById;
 DELIMITER //
 //
 CREATE PROCEDURE  createUser(in name varchar(45),in last_name varchar(45))
@@ -147,6 +149,11 @@ insert into users(name, last_name) values(name,last_name);
 set lastId=LAST_INSERT_ID();
 insert into members(id_user,id_group) values (lastId,1);
 COMMIT;
+END
+//
+CREATE PROCEDURE  selectUserById(in id_in int)
+BEGIN
+select * from users where id=id_in;
 END
 //
 CREATE PROCEDURE  selectAllUsers()
@@ -171,6 +178,8 @@ DELIMITER ;
 -- -----------------------------------------------------
 DROP PROCEDURE IF EXISTS createGroup;
 DROP PROCEDURE IF EXISTS selectAllGroups;
+DROP PROCEDURE IF EXISTS selectGroupById;
+
 DELIMITER //
 //
 CREATE PROCEDURE  createGroup(in name varchar(45))
@@ -181,6 +190,12 @@ END
 CREATE PROCEDURE  selectAllGroups()
 BEGIN
 select * from groups;
+END
+//
+
+CREATE PROCEDURE selectGroupById(in id_in int)
+BEGIN
+select * from groups where id= id_in;
 END
 //
 DELIMITER ;
@@ -220,12 +235,19 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS createResource;
 DROP PROCEDURE IF EXISTS selectAllResources;
+DROP PROCEDURE IF EXISTS selectResourceById;
 
 DELIMITER //
 //
 CREATE PROCEDURE  createResource(in name varchar(45),in type varchar(45))
 BEGIN
 insert into resources(name,type) values(name,type);
+END
+
+//
+CREATE PROCEDURE  selectResourceById(in id_in int)
+BEGIN
+select * from resources where id= id_in;
 END
 
 //
@@ -243,11 +265,18 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS createAccess;
 DROP PROCEDURE IF EXISTS selectAllAccess;
+DROP PROCEDURE IF EXISTS selectAccessById;
 DELIMITER //
 //
 CREATE PROCEDURE  createAccess(in name varchar(45))
 BEGIN
 insert into access(name) values(name);
+END
+
+//
+CREATE PROCEDURE  selectAccessById(in id_in int)
+BEGIN
+select * from access where id=id_in;
 END
 
 //

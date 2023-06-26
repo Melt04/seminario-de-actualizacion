@@ -4,4 +4,4 @@ class Resource {
     this.type = type
   }
 }
-module.exports = { Resource }
+module.exports = Resource

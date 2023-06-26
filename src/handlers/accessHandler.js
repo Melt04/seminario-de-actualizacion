@@ -1,15 +1,37 @@
 class AccessHandler {
-  add (resId, grpId) {
-    throw new Error('Not implemented')
+  constructor (db) {
+    this.db = db
   }
-  remove (resId, grpId) {
-    throw new Error('Not implemented')
+  async create (accessData) {
+    const { name } = accessData
+    try {
+      const data = await this.db.query(`CALL createAccess('${name}')`)
+      console.log(data)
+    } catch (e) {
+      console.log(e)
+      throw e
+    }
   }
-  getAccessGroupByResource (resId) {
-    throw new Error('Not implemented')
+
+  async getAllAccess () {
+    try {
+      const data = await this.db.query(`CALL selectAllAccess`)
+      return data[0]
+    } catch (e) {
+      console.log(e)
+      throw e
+    }
   }
-  getAccessResourcessByGroup (grpId) {
-    throw new Error('Not implemented')
+
+  async getIdById (id) {
+    try {
+      const data = await this.db.query(`CALL selectAccessById (${id})`)
+      return data[0]
+    } catch (e) {
+      throw e
+
+      console.log(e)
+    }
   }
 }
 

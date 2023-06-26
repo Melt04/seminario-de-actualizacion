@@ -1,17 +1,38 @@
 class GroupHandler {
-  constructor (groupRepository) {
-    this.repository = groupRepository
+  constructor (db) {
+    this.db = db
   }
-  create (userData) {
-    return this.repository.createGroup({ ...userData })
+  async create (groupData) {
+    const { name } = groupData
+    try {
+      const data = await this.db.query(`CALL createGroup('${name}')`)
+      console.log(data)
+    } catch (e) {
+      console.log(e)
+      throw e
+    }
   }
 
   update (id, data) {
     return this.repository.updateGroup(id, { ...data })
   }
-
-  get (id) {
-    return this.repository.getGroup(id)
+  async getIdById (id) {
+    try {
+      const data = await this.db.query(`CALL selectGroupById (${id})`)
+      return data[0]
+    } catch (e) {
+      console.log(e)
+      throw e
+    }
+  }
+  async getAllGroups () {
+    try {
+      const data = await this.db.query(`CALL selectAllGroups`)
+      return data[0]
+    } catch (e) {
+      console.log(e)
+      throw e
+    }
   }
 
   delete (id) {
@@ -19,4 +40,4 @@ class GroupHandler {
   }
 }
 
-module.exports = UserHandler
+module.exports = GroupHandler

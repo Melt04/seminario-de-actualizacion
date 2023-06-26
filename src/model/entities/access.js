@@ -3,4 +3,4 @@ class Access {
     this.name = name
   }
 }
-module.exports = { Access }
+module.exports = Access

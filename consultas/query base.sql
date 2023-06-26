@@ -153,7 +153,7 @@ END
 //
 CREATE PROCEDURE  selectUserById(in id_in int)
 BEGIN
-select * from users where id=id_in
+select * from users where id=id_in;
 END
 //
 CREATE PROCEDURE  selectAllUsers()
@@ -178,6 +178,8 @@ DELIMITER ;
 -- -----------------------------------------------------
 DROP PROCEDURE IF EXISTS createGroup;
 DROP PROCEDURE IF EXISTS selectAllGroups;
+DROP PROCEDURE IF EXISTS selectGroupById;
+
 DELIMITER //
 //
 CREATE PROCEDURE  createGroup(in name varchar(45))
@@ -188,6 +190,12 @@ END
 CREATE PROCEDURE  selectAllGroups()
 BEGIN
 select * from groups;
+END
+//
+
+CREATE PROCEDURE selectGroupById(in id_in int)
+BEGIN
+select * from groups where id= id_in;
 END
 //
 DELIMITER ;
@@ -227,12 +235,19 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS createResource;
 DROP PROCEDURE IF EXISTS selectAllResources;
+DROP PROCEDURE IF EXISTS selectResourceById;
 
 DELIMITER //
 //
 CREATE PROCEDURE  createResource(in name varchar(45),in type varchar(45))
 BEGIN
 insert into resources(name,type) values(name,type);
+END
+
+//
+CREATE PROCEDURE  selectResourceById(in id_in int)
+BEGIN
+select * from resources where id= id_in;
 END
 
 //
@@ -250,11 +265,18 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS createAccess;
 DROP PROCEDURE IF EXISTS selectAllAccess;
+DROP PROCEDURE IF EXISTS selectAccessById;
 DELIMITER //
 //
 CREATE PROCEDURE  createAccess(in name varchar(45))
 BEGIN
 insert into access(name) values(name);
+END
+
+//
+CREATE PROCEDURE  selectAccessById(in id_in int)
+BEGIN
+select * from access where id=id_in;
 END
 
 //
