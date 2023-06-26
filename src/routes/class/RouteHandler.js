@@ -4,7 +4,6 @@ class RouteHandler {
   }
   getRoute (path, method) {
     const data = this.routes.find(route => {
-      console.log(route)
       return route.path.exec(path) && route.method === method
     })
     return data

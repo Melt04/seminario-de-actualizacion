@@ -20,6 +20,11 @@ const {
   getMembersByGroup,
   getAllMembers
 } = require('./membersRoutes')
+const {
+  userIsAuthorized,
+  authorizeAccessToResource,
+  authorizeGroupToAccess
+} = require('./authorizeRoutes')
 const routesHandler = new RouteHandler([
   userCreateRoute,
   getAllUsers,
@@ -35,7 +40,10 @@ const routesHandler = new RouteHandler([
   resourceCreateRoute,
   addUserToGroup,
   getMembersByGroup,
-  getAllMembers
+  getAllMembers,
+  userIsAuthorized,
+  authorizeAccessToResource,
+  authorizeGroupToAccess
 ])
 
 module.exports = { routesHandler }

@@ -303,12 +303,20 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS assingAccessToGroup;
 DROP PROCEDURE IF EXISTS selectAllGroupsAccess;
 DROP PROCEDURE IF EXISTS removeAccessToGroup;
+DROP PROCEDURE IF EXISTS userHasAccessToResource
+-- select * from access_resources ar inner join group_access ga on ar.id_access=ga.id_access inner join members m on m.id_group=ga.id_group  where id_resource=1 and  m.id_user=2;
 
 DELIMITER //
 //
 CREATE PROCEDURE  assingAccessToGroup(in id_group_in int, in id_access_in int)
 BEGIN
 insert into group_access(id_group,id_access) values(id_group_in,id_access_in);
+END
+
+//
+CREATE PROCEDURE  userHasAccessToResource(in id_user_in int, in id_resource_in int)
+BEGIN
+select * from access_resources ar inner join group_access ga on ar.id_access=ga.id_access inner join members m on m.id_group=ga.id_group  where id_resource=id_resource_in and  m.id_user=id_user_in;
 END
 
 //
