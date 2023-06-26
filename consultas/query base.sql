@@ -205,6 +205,7 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS addUserToGroup;
 DROP PROCEDURE IF EXISTS selectAllMembers;
+DROP PROCEDURE IF EXISTS selectAllMembersForGroup;
 DROP PROCEDURE IF EXISTS removeUserFromGroup;
 
 DELIMITER //
@@ -212,6 +213,12 @@ DELIMITER //
 CREATE PROCEDURE  addUserToGroup(in id_user int,in id_group int)
 BEGIN
 insert into members(id_user,id_group) values(id_user,id_group);
+END
+
+//
+CREATE PROCEDURE  selectAllMembersForGroup(in id_group_in int)
+BEGIN
+select * from members where id_group=id_group_in;
 END
 
 //

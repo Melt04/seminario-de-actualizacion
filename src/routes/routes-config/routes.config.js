@@ -15,7 +15,11 @@ const {
   getResourceById,
   resourceCreateRoute
 } = require('./resourcesRoutes')
-
+const {
+  addUserToGroup,
+  getMembersByGroup,
+  getAllMembers
+} = require('./membersRoutes')
 const routesHandler = new RouteHandler([
   userCreateRoute,
   getAllUsers,
@@ -28,7 +32,10 @@ const routesHandler = new RouteHandler([
   getAllAccess,
   getAllResources,
   getResourceById,
-  resourceCreateRoute
+  resourceCreateRoute,
+  addUserToGroup,
+  getMembersByGroup,
+  getAllMembers
 ])
 
 module.exports = { routesHandler }

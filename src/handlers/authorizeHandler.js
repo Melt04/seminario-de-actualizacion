@@ -1,6 +1,18 @@
 class Authorizer {
-  authorize (userId, resId) {
-    throw new Error('Not implemented')
+  constructor (db) {
+    this.db = db
+  }
+  authorizeAccessToResource ({ resId, accessId }) {
+    try {
+      const data = await this.db.query(
+  `CALL assignAccessToResource('${resId}','${accessId}')`
+)
+
+      return data
+    } catch (e) {
+      console.log(e)
+      throw e
+    }
   }
 }
 
