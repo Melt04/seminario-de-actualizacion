@@ -10,20 +10,33 @@ const userIsAuthorized = new Route(
   async (req, res) => {
     try {
       body = await getBodyFromRequest(req)
+      if (!body?.resourceId || !body.userId) {
+        res.statusCode = 400
+        res.write(JSON.stringify({ message: 'Missing Data', error: false }))
+        return res.end()
+      }
+
       const result = await authorizeHandler.userIsAuthorized({
         resourceId: body.resourceId,
         userId: body.userId
       })
-      console.log(result)
       res.write(
-        JSON.stringify({ message: `User ${result ? 'is' : 'not'} Authorized` })
+        JSON.stringify({
+          message: `User ${result ? 'is' : 'not'} Authorized`,
+          error: false
+        })
       )
       res.end()
     } catch (e) {
       console.log(e)
 
       res.statusCode = 500
-      res.write(JSON.stringify({ message: 'Failed validate authorization' }))
+      res.write(
+        JSON.stringify({
+          message: 'Failed validate authorization',
+          error: true
+        })
+      )
 
       res.end()
     }
@@ -36,18 +49,29 @@ const authorizeAccessToResource = new Route(
   async (req, res) => {
     try {
       body = await getBodyFromRequest(req)
-
-      await authorizeHandler.authorizeAccessToResource({
+      if (!body?.resId || !body.accessId) {
+        res.statusCode = 400
+        res.write(JSON.stringify({ message: 'Missing Data', error: true }))
+        return res.end()
+      }
+      const result = await authorizeHandler.authorizeAccessToResource({
         resId: body.resId,
         accessId: body.accessId
       })
-      res.write(JSON.stringify({ message: 'Access to Resource created' }))
+      if (!result) {
+        throw new Error('Failed to gran access')
+      }
+      res.statusCode = 201
+      res.write(
+        JSON.stringify({ message: 'Access to Resource created', error: false })
+      )
       res.end()
     } catch (e) {
       console.log(e)
-
       res.statusCode = 500
-      res.write(JSON.stringify({ message: 'Failed to create access' }))
+      res.write(
+        JSON.stringify({ message: 'Failed to create access', error: true })
+      )
 
       res.end()
     }
@@ -60,6 +84,11 @@ const authorizeGroupToAccess = new Route(
   async (req, res) => {
     try {
       body = await getBodyFromRequest(req)
+      if (!body?.groupId || !body.accessId) {
+        res.statusCode = 400
+        res.write(JSON.stringify({ message: 'Missing Data' }))
+        return res.end()
+      }
 
       const data = await authorizeHandler.authorizeGroupToAccess({
         accessId: body.accessId,

@@ -12,15 +12,24 @@ const groupCreateRoute = new Route(
   async (req, res) => {
     try {
       body = await getBodyFromRequest(req)
+      if (!body?.name) {
+        res.statusCode = 400
+        res.write(JSON.stringify({ message: 'Missing Data', error: true }))
+        return res.end()
+      }
       const group = new Group({ name: body.name })
       await groupHandler.create(group)
-      res.write(JSON.stringify({ message: 'Created Successfully' }))
+      res.statusCode = 201
+      res.write(
+        JSON.stringify({ message: 'Created Successfully', error: false })
+      )
       res.end()
     } catch (e) {
       console.log(e)
       res.statusCode = 500
-      res.write(JSON.stringify({ message: 'Failed to create group' }))
-
+      res.write(
+        JSON.stringify({ message: 'Failed to create group', error: false })
+      )
       res.end()
     }
   }
@@ -31,12 +40,14 @@ const getAllGroups = new Route(
   async (req, res) => {
     try {
       const data = await groupHandler.getAllGroups()
-      res.write(JSON.stringify(data))
+      res.write(JSON.stringify({ data, error: false }))
       res.end()
     } catch (e) {
       console.log(e)
       res.statusCode = 500
-      res.write(JSON.stringify({ message: 'Failed to get all group' }))
+      res.write(
+        JSON.stringify({ message: 'Failed to get all group', error: true })
+      )
       res.end()
     }
   }
@@ -48,13 +59,15 @@ const gerGroupById = new Route(
     try {
       const index = req.url.lastIndexOf('/')
       const id = req.url.slice(index + 1)
-      const data = await groupHandler.getIdById(id)
-      res.write(JSON.stringify(data))
+      const data = await groupHandler.getGroupById(id)
+      res.write(JSON.stringify({ data, error: false }))
       res.end()
     } catch (e) {
       console.log(e)
       res.statusCode = 500
-      res.write(JSON.stringify({ message: 'Failed to get all group' }))
+      res.write(
+        JSON.stringify({ message: 'Failed to get  group', error: true })
+      )
       res.end()
     }
   }

@@ -5,11 +5,11 @@ class AccessHandler {
   async create (accessData) {
     const { name } = accessData
     try {
-      const data = await this.db.query(`CALL createAccess('${name}')`)
-      console.log(data)
+      await this.db.query(`CALL createAccess('${name}')`)
+      return true
     } catch (e) {
       console.log(e)
-      throw e
+      return false
     }
   }
 
@@ -23,7 +23,7 @@ class AccessHandler {
     }
   }
 
-  async getIdById (id) {
+  async getAccessById (id) {
     try {
       const data = await this.db.query(`CALL selectAccessById (${id})`)
       return data[0]

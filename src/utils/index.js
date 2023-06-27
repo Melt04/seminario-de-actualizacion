@@ -5,8 +5,12 @@ async function getBodyFromRequest (req) {
       body += data
     })
     req.on('end', () => {
-      body = JSON.parse(body)
-      resolve(body)
+      try {
+        body = JSON.parse(body)
+        resolve(body)
+      } catch (e) {
+        reject(new Error('Failed at parsing body'))
+      }
     })
   })
 }

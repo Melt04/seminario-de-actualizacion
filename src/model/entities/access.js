@@ -1,5 +1,6 @@
 class Access {
-  constructor ({ name }) {
+  constructor ({ name, id = null }) {
+    this.id = id
     this.name = name
   }
 }

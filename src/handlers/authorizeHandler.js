@@ -8,10 +8,10 @@ class Authorizer {
         `CALL assignAccessToResource('${resId}','${accessId}')`
       )
 
-      return data
+      return true
     } catch (e) {
       console.log(e)
-      throw e
+      return false
     }
   }
   async authorizeGroupToAccess ({ groupId, accessId }) {
@@ -37,7 +37,7 @@ class Authorizer {
       return data[0].length > 0
     } catch (e) {
       console.log(e)
-      throw e
+      return false
     }
   }
 }

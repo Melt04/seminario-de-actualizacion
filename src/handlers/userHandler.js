@@ -5,13 +5,17 @@ class UserHandler {
   async create (userData) {
     const { name, lastName, status } = userData
     try {
+      const query = `'${name}','${lastName}' ${
+        status ? `,'${status}` : ',null'
+      }'`
       const data = await this.db.query(
-        `CALL createUser('${name}','${lastName}')`
+        /* `CALL createUser('${name}','${lastName}')` */
+        `CALL createUser(${query})`
       )
-      console.log(data)
+      return true
     } catch (e) {
       console.log(e)
-      throw e
+      return false
     }
   }
 
@@ -29,7 +33,7 @@ class UserHandler {
     }
   }
 
-  async getIdById (id) {
+  async getUserById (id) {
     try {
       const data = await this.db.query(`CALL selectUserById (${id})`)
       return data[0]

@@ -13,12 +13,16 @@ const resourceCreateRoute = new Route(
       body = await getBodyFromRequest(req)
       const resource = new Resource({ name: body.name, type: body.type })
       await resourceHandler.create(resource)
-      res.write(JSON.stringify({ message: 'Created Successfully' }))
+      res.write(
+        JSON.stringify({ message: 'Created Successfully', error: false })
+      )
       res.end()
     } catch (e) {
       console.log(e)
       res.statusCode = 500
-      res.write(JSON.stringify({ message: 'Failed to create resource' }))
+      res.write(
+        JSON.stringify({ message: 'Failed to create resource', error: true })
+      )
 
       res.end()
     }
@@ -30,12 +34,14 @@ const getAllResources = new Route(
   async (req, res) => {
     try {
       const data = await resourceHandler.getAllResources()
-      res.write(JSON.stringify(data))
+      res.write(JSON.stringify({ data, error: false }))
       res.end()
     } catch (e) {
       console.log(e)
       res.statusCode = 500
-      res.write(JSON.stringify({ message: 'Failed to get all resource' }))
+      res.write(
+        JSON.stringify({ message: 'Failed to get all resource', error: true })
+      )
       res.end()
     }
   }
@@ -48,12 +54,14 @@ const getResourceById = new Route(
       const index = req.url.lastIndexOf('/')
       const id = req.url.slice(index + 1)
       const data = await resourceHandler.getResourceById(id)
-      res.write(JSON.stringify(data))
+      res.write(JSON.stringify({ data, error: false }))
       res.end()
     } catch (e) {
       console.log(e)
       res.statusCode = 500
-      res.write(JSON.stringify({ message: 'Failed to get all resource' }))
+      res.write(
+        JSON.stringify({ message: 'Failed to get all resource', error: true })
+      )
       res.end()
     }
   }

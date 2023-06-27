@@ -10,16 +10,24 @@ const addUserToGroup = new Route(
   async (req, res) => {
     try {
       body = await getBodyFromRequest(req)
+      if (!body?.idUser || !body?.idGroup) {
+        res.statusCode = 400
+        res.write(JSON.stringify({ message: 'Missing Data', error: true }))
+        return res.end()
+      }
       await membersHandler.addUserToGroup({
         idUser: body.idUser,
         idGroup: body.idGroup
       })
-      res.write(JSON.stringify({ message: 'Added Successfully' }))
+      res.statusCode = 201
+      res.write(JSON.stringify({ message: 'Added Successfully', error: false }))
       res.end()
     } catch (e) {
       console.log(e)
       res.statusCode = 500
-      res.write(JSON.stringify({ message: 'Failed to add to  group' }))
+      res.write(
+        JSON.stringify({ message: 'Failed to add to  group', error: true })
+      )
 
       res.end()
     }
@@ -31,12 +39,14 @@ const getAllMembers = new Route(
   async (req, res) => {
     try {
       const data = await membersHandler.selectAllMembers()
-      res.write(JSON.stringify(data))
+      res.write(JSON.stringify({ data, error: false }))
       res.end()
     } catch (e) {
       console.log(e)
       res.statusCode = 500
-      res.write(JSON.stringify({ message: 'Failed to get all resource' }))
+      res.write(
+        JSON.stringify({ message: 'Failed to get all resource', error: true })
+      )
       res.end()
     }
   }
@@ -49,12 +59,14 @@ const getMembersByGroup = new Route(
       const index = req.url.lastIndexOf('/')
       const id = req.url.slice(index + 1)
       const data = await membersHandler.selectMembersByGroup(id)
-      res.write(JSON.stringify(data))
+      res.write(JSON.stringify({ data, error: false }))
       res.end()
     } catch (e) {
       console.log(e)
       res.statusCode = 500
-      res.write(JSON.stringify({ message: 'Failed to get all resource' }))
+      res.write(
+        JSON.stringify({ message: 'Failed to get all resource', error: true })
+      )
       res.end()
     }
   }

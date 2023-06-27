@@ -16,7 +16,7 @@ class GroupHandler {
   update (id, data) {
     return this.repository.updateGroup(id, { ...data })
   }
-  async getIdById (id) {
+  async getGroupById (id) {
     try {
       const data = await this.db.query(`CALL selectGroupById (${id})`)
       return data[0]

@@ -141,15 +141,20 @@ DROP PROCEDURE IF EXISTS activeUser;
 DROP PROCEDURE IF EXISTS selectUserById;
 DELIMITER //
 //
-CREATE PROCEDURE  createUser(in name varchar(45),in last_name varchar(45))
+CREATE PROCEDURE  createUser(in name varchar(45),in last_name varchar(45),in status varchar(45))
 BEGIN
 DECLARE lastId INT DEFAULT 0;
 START TRANSACTION;
-insert into users(name, last_name) values(name,last_name);
-set lastId=LAST_INSERT_ID();
-insert into members(id_user,id_group) values (lastId,1);
-COMMIT;
-END
+if isnull(status) THEN
+	insert into users(name, last_name) values(name,last_name);
+ELSE
+	insert into users(name, last_name,status) values(name,last_name,status);
+END IF;
+	set lastId=LAST_INSERT_ID();
+	insert into members(id_user,id_group) values (lastId,1);
+	COMMIT;
+
+END;
 //
 CREATE PROCEDURE  selectUserById(in id_in int)
 BEGIN
@@ -205,6 +210,7 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS addUserToGroup;
 DROP PROCEDURE IF EXISTS selectAllMembers;
+DROP PROCEDURE IF EXISTS selectAllMembersForGroup;
 DROP PROCEDURE IF EXISTS removeUserFromGroup;
 
 DELIMITER //
@@ -212,6 +218,12 @@ DELIMITER //
 CREATE PROCEDURE  addUserToGroup(in id_user int,in id_group int)
 BEGIN
 insert into members(id_user,id_group) values(id_user,id_group);
+END
+
+//
+CREATE PROCEDURE  selectAllMembersForGroup(in id_group_in int)
+BEGIN
+select * from members where id_group=id_group_in;
 END
 
 //
@@ -296,12 +308,20 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS assingAccessToGroup;
 DROP PROCEDURE IF EXISTS selectAllGroupsAccess;
 DROP PROCEDURE IF EXISTS removeAccessToGroup;
+DROP PROCEDURE IF EXISTS userHasAccessToResource;
+-- select * from access_resources ar inner join group_access ga on ar.id_access=ga.id_access inner join members m on m.id_group=ga.id_group  where id_resource=1 and  m.id_user=2;
 
 DELIMITER //
 //
 CREATE PROCEDURE  assingAccessToGroup(in id_group_in int, in id_access_in int)
 BEGIN
 insert into group_access(id_group,id_access) values(id_group_in,id_access_in);
+END
+
+//
+CREATE PROCEDURE  userHasAccessToResource(in id_user_in int, in id_resource_in int)
+BEGIN
+select * from access_resources ar inner join group_access ga on ar.id_access=ga.id_access inner join members m on m.id_group=ga.id_group  where id_resource=id_resource_in and  m.id_user=id_user_in;
 END
 
 //
