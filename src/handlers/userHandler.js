@@ -3,9 +3,9 @@ class UserHandler {
     this.db = db
   }
   async create (userData) {
-    const { name, lastName, status } = userData
+    const { name, lastName, status, username, password } = userData
     try {
-      const query = `'${name}','${lastName}' ${
+      const query = `'${name}','${lastName}','${username}','${password}' ${
         status ? `,'${status}` : ',null'
       }'`
       const data = await this.db.query(
@@ -30,6 +30,16 @@ class UserHandler {
     } catch (e) {
       console.log(e)
       throw e
+    }
+  }
+  async disableUser (id) {
+    try {
+      const data = await this.db.query(`CALL disableUser (${id})`)
+      return true
+    } catch (e) {
+      console.log(e)
+
+      return false
     }
   }
 

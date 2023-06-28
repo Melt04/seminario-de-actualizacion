@@ -12,7 +12,12 @@ const userCreateRoute = new Route(
   async (req, res) => {
     try {
       body = await getBodyFromRequest(req)
-      if (!body?.name || !body?.last_name) {
+      if (
+        !body?.name ||
+        !body?.last_name ||
+        !body?.username ||
+        !body?.password
+      ) {
         res.statusCode = 400
         console.log(e)
         res.write(JSON.stringify({ message: 'Missing data', error: true }))
@@ -20,6 +25,8 @@ const userCreateRoute = new Route(
       const user = new User({
         name: body.name,
         lastName: body.last_name,
+        password: body.password,
+        username: body.username,
         status: body?.status
       })
 
@@ -42,6 +49,34 @@ const userCreateRoute = new Route(
     }
   }
 )
+const disableUser = new Route(
+  'POST',
+  new RegExp('^/users/disable$'),
+  async (req, res) => {
+    try {
+      body = await getBodyFromRequest(req)
+      if (!body?.userid) {
+        res.statusCode = 400
+        console.log(e)
+        res.write(JSON.stringify({ message: 'Missing data', error: true }))
+      }
+      const result = await userHandler.disableUser(body.userid)
+      res.write(
+        JSON.stringify({ message: 'Disabled Successfully', error: false })
+      )
+      return res.end()
+    } catch (e) {
+      res.statusCode = 500
+      console.log(e)
+      res.write(
+        JSON.stringify({ message: 'Failed to disabled user', error: true })
+      )
+
+      res.end()
+    }
+  }
+)
+
 const getAllUsers = new Route(
   'GET',
   new RegExp('^/users$'),
@@ -82,5 +117,6 @@ const getUserById = new Route(
 module.exports = {
   getAllUsers,
   userCreateRoute,
-  getUserById
+  getUserById,
+  disableUser
 }

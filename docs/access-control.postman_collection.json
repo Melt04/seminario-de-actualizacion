@@ -87,7 +87,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"Alan\",\r\n    \"last_name\":\"Garcia2\"\r\n}",
+							"raw": "{\r\n    \"name\":\"Alan\",\r\n    \"last_name\":\"Garcia2\",\r\n    \"username\":\"Prueba\",\r\n    \"password\":\"secret\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -103,6 +103,35 @@
 							"port": "3000",
 							"path": [
 								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Disabled user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"userid\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/disable",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"disable"
 							]
 						}
 					},
@@ -186,14 +215,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/members",
+							"raw": "http://localhost:3000/members/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
-								"members"
+								"members",
+								"1"
 							]
 						}
 					},

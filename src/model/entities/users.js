@@ -1,8 +1,17 @@
 class User {
-  constructor ({ name, lastName, status = 'ACTIVE', id = null }) {
+  constructor ({
+    name,
+    lastName,
+    username,
+    password,
+    status = 'ACTIVE',
+    id = null
+  }) {
     this.id = id
     this.name = name
     this.lastName = lastName
+    this.username = username
+    this.password = password
     this.status = status
   }
 }

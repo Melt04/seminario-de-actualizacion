@@ -24,6 +24,9 @@ CREATE TABLE IF NOT EXISTS `access-control`.`users` (
   `created_at` TIMESTAMP NOT NULL DEFAULT NOW(),
   `updated_at` TIMESTAMP NOT NULL DEFAULT NOW(),
   `status` VARCHAR(45) NOT NULL DEFAULT 'ACTIVE',
+  `username` VARCHAR(45) NOT NULL UNIQUE,
+  `password` VARCHAR(45) NOT NULL,
+  
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -141,14 +144,14 @@ DROP PROCEDURE IF EXISTS activeUser;
 DROP PROCEDURE IF EXISTS selectUserById;
 DELIMITER //
 //
-CREATE PROCEDURE  createUser(in name varchar(45),in last_name varchar(45),in status varchar(45))
+CREATE PROCEDURE  createUser(in name varchar(45),in last_name varchar(45),in username varchar(45), in password varchar(100),in status varchar(45))
 BEGIN
 DECLARE lastId INT DEFAULT 0;
 START TRANSACTION;
 if isnull(status) THEN
-	insert into users(name, last_name) values(name,last_name);
+	insert into users(name, last_name,username,password) values(name,last_name,username,password);
 ELSE
-	insert into users(name, last_name,status) values(name,last_name,status);
+	insert into users(name, last_name,status,username,password) values(name,last_name,status,username,password);
 END IF;
 	set lastId=LAST_INSERT_ID();
 	insert into members(id_user,id_group) values (lastId,1);
