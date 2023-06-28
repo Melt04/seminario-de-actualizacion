@@ -223,13 +223,13 @@ END
 //
 CREATE PROCEDURE  selectAllMembersForGroup(in id_group_in int)
 BEGIN
-select * from members where id_group=id_group_in;
+select u.name,u.last_name,u.id as user_id,g.id as id_group,g.name as group_name from members m inner join users u  on m.id_user=u.id inner join groups g on m.id_group=g.id where id_group=id_group_in;
 END
 
 //
 CREATE PROCEDURE  selectAllMembers()
 BEGIN
-select * from members;
+select  u.name,u.last_name,u.id as user_id,g.id as id_group,g.name as group_name from members m  inner join users u  on m.id_user=u.id  inner join groups g on m.id_group=g.id;
 END
 
 //
