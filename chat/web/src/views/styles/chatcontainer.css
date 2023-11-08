@@ -1,0 +1,11 @@
+.chat-screen {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 100px; 
+}
+
+
+.chat-container {
+    margin: 0 auto; 
+}
