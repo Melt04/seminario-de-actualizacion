@@ -1,7 +1,9 @@
 class ChatContainerModel {
   constructor() {}
-  async getMessages() {
-    const response = await fetch("http://localhost:8000/chats/messages");
+  async getMessages(chatId) {
+    const response = await fetch(`http://localhost:8000/chats/message/${chatId}`);
+    const jsonResponse = await response.json();
+    return jsonResponse;
   }
   async getMessageProposal(userId) {
     const responseProposal = await fetch(`http://localhost:8000/proposal/${userId}`);

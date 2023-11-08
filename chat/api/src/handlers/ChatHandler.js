@@ -28,7 +28,7 @@ class ChatHandler {
     const chatFound = this.chats.find((c) => {
       return c.id == chatId;
     });
-    console.log(chatFound);
+
     if (chatFound) {
       const allMessages = [];
       while (chatFound.messages.length > 0) {
@@ -36,7 +36,8 @@ class ChatHandler {
 
         allMessages.push(message);
       }
-      return allMessages;
+      const key = chatFound.key;
+      return { allMessages, key };
     }
     return [];
   }

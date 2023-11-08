@@ -7,16 +7,20 @@ class ChatContainerController {
   }
   async init() {
     this.view.button.addEventListener("click", async () => this.getUserList());
-    this.intervalGetMessages = setInterval(() => {
-      this.getMessages();
+    this.intervalGetMessages = setInterval(async () => {
+      if (this.chatId != null) {
+        const message = await this.getMessages(this.chatId);
+        this.view.chat.paintMessages(message);
+      }
     }, 5000);
     this.intervalGetProposal = setInterval(async () => {
       await this.getMessageProposal(1);
     }, 5000);
     const users = await this.getUserList();
   }
-  getMessages() {
-    this.model.getMessages();
+  async getMessages(chatId) {
+    const data = await this.model.getMessages(chatId);
+    console.log(data);
   }
   async getMessageProposal(userId) {
     const data = await this.model.getMessageProposal(userId);
@@ -26,8 +30,9 @@ class ChatContainerController {
       if (response) {
         const responseAcceptProposal = await fetch(`http://localhost:8000/proposal/accept/${proposal.proposalId}`, { method: "POST" });
         const jsonAcceptProposal = await responseAcceptProposal.json();
-        console.log(jsonAcceptProposal);
+
         this.proposal = proposal.proposalId;
+        this.chatId = jsonAcceptProposal.chatId;
       } else {
         await fetch(`http://localhost:8000/proposal/reject/${proposal.proposalId}`, { method: "POST" });
         alert("proposal was rejected");

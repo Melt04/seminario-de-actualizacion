@@ -31,6 +31,15 @@ class ChatApp extends HTMLElement {
     const sendButton = document.querySelector("#send-button");
     sendButton.addEventListener("click", () => this.sendMessage());
   }
+  paintMessages(message) {
+    const messageInput = this.querySelector("#message-input");
+    const messageDiv = document.createElement("div");
+    messageDiv.classList.add("message");
+    messageDiv.classList.add("received-message");
+    messageDiv.textContent = message;
+    this.querySelector(".chat-messages").appendChild(messageDiv);
+    messageInput.value = "";
+  }
 
   sendMessage() {
     const messageInput = this.querySelector("#message-input");
