@@ -13,29 +13,32 @@ class ChatHandler {
     return this.chats;
   }
 
-  async sendMessage(chatId, message) {
+  async sendMessage(chatId, message, userId) {
     const chatFound = this.chats.find((c) => {
       return c.id == chatId;
     });
     if (chatFound) {
-      chatFound.messages.push(message);
+      console.log(userId);
+      chatFound.messages.push({ userId, message });
       return true;
     }
     return false;
   }
 
-  getMessages(chatId) {
+  getMessages(chatId, userId) {
     const chatFound = this.chats.find((c) => {
       return c.id == chatId;
     });
-
     if (chatFound) {
       const allMessages = [];
-      while (chatFound.messages.length > 0) {
-        const message = chatFound.messages.pop();
+      chatFound.messages = chatFound.messages.filter((mess) => {
+        if (mess.userId == userId) {
+          allMessages.push(mess.message);
+          return false;
+        }
+        return true;
+      });
 
-        allMessages.push(message);
-      }
       const key = chatFound.key;
       return { allMessages, key };
     }

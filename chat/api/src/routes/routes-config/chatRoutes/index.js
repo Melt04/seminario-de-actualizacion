@@ -19,11 +19,13 @@ const getAllChats = new Route("GET", new RegExp("^/chats$"), async (req, res) =>
 const sendMessageRoute = new Route("POST", new RegExp("^/chats/message$"), async (req, res) => {
   try {
     body = await getBodyFromRequest(req);
+
     const { chatId, message } = body;
+    const userId = req.headers["x-user-id"];
     if (!chatId || !message) {
       throw new Error("Failing data");
     }
-    const respose = await chatHandler.sendMessage(chatId, message);
+    const respose = await chatHandler.sendMessage(chatId, message, userId);
     if (!respose) {
       res.write(JSON.stringify({ message: "Chat doesnt  exst", error: true }));
       res.end();
@@ -42,8 +44,9 @@ const getMessagesRoutes = new Route("GET", new RegExp("^/chats/message/.*$"), as
   try {
     const index = req.url.lastIndexOf("/");
     const id = req.url.slice(index + 1);
-    const messages = chatHandler.getMessages(id);
-    res.write(JSON.stringify({ messages, error: false }));
+    const userId = req.headers["x-user-id"];
+    const messages = chatHandler.getMessages(id, userId);
+    res.write(JSON.stringify({ messages: messages.allMessages, key: messages.key, error: false }));
     res.end();
   } catch (e) {
     console.log(e);
