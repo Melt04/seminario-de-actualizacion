@@ -1,0 +1,12 @@
+/* Estilo para el componente userCard */
+user-card {
+    display: block;
+  }
+  
+  .user-card {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }

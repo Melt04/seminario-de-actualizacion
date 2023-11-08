@@ -1,73 +1,66 @@
-const { dataBaseHandler } = require("../DataBaseHandler/DataBaseHandler.js");
 const { proposalHandler } = require("./proposalHandler.js");
-const { Sanitizer } = require("../Common/Sanitizer.js");
-const { chatStorage } = require("./ChatStorage.js");
+const { randomUUID } = require("node:crypto");
+const dbHandler = require("../model/db/dbConnection.js");
+
+const Chat = require("../model/entities/chat.js");
 
 class ChatHandler {
   constructor(db) {
     this.db = db;
+    this.chats = [];
   }
-  /*   async propose(requestData, responseCallback) {
-    const userOriginId = requestData.originUserId;
-    const userTargetId = requestData.targetUserId;
-
-    proposalHandler.addAProposal(userOriginId, userTargetId);
-
-    responseCallback(200, { message: "Proposal Sended!" });
+  getAllChats() {
+    return this.chats;
   }
- */
-  askForProposal(requestData, responseCallback) {
-    let proposals = new Array();
-    const userOriginId = requestData.originUserId;
-    let idx = 0;
-    proposalHandler.listOfProposal.forEach((proposal) => {
-      if (proposal["targetIdUser"] == userOriginId) {
-        proposals.push({
-          idProposal: idx,
-          idOriginUser: proposal["originIdUser"],
-          status: proposal["status"],
-        });
+
+  async sendMessage(chatId, message) {
+    const chatFound = this.chats.find((c) => {
+      return c.id == chatId;
+    });
+    if (chatFound) {
+      chatFound.messages.push(message);
+      return true;
+    }
+    return false;
+  }
+
+  getMessages(chatId) {
+    const chatFound = this.chats.find((c) => {
+      return c.id == chatId;
+    });
+    console.log(chatFound);
+    if (chatFound) {
+      const allMessages = [];
+      while (chatFound.messages.length > 0) {
+        const message = chatFound.messages.pop();
+
+        allMessages.push(message);
       }
-      idx++;
+      return allMessages;
+    }
+    return [];
+  }
+  closeChat(chatId) {
+    const chatFound = this.chats.indexOf((c) => {
+      return c.id == chatId;
     });
 
-    responseCallback(200, { proposals: proposals });
-  }
-  async sendMessage(requestData, responseCallback) {
-    try {
-      let messageData = {
-        chatid: requestData.chatid,
-        originId: requestData.originId,
-        targetId: requestData.targetId,
-        body: requestData.body,
-        state: requestData.state,
-      };
-
-      chatStorage.storeChatMessages(requestData.chatid, messageData);
-
-      responseCallback(200, {
-        message: "Message Sended ok!",
-        messageState: "sended",
-        messageData,
-      });
-    } catch (error) {
-      console.error(error);
+    if (chatFound) {
+      this.chats.splice(chatFound, 1);
+      return true;
     }
+    return false;
   }
-
-  getMessages(requestData, responseCallback) {
-    let chatid = requestData.chatid;
-
-    let chatMessages = chatStorage.getChatMessages(chatid);
-
-    responseCallback(200, { chatMessages });
+  createChat() {
+    const id = randomUUID();
+    const key = this.generateKey();
+    const chat = new Chat({ id, key });
+    this.chats.push(chat);
+    return chat.id;
   }
-
-  async confirmChat(requestData, responseCallback) {
-    let proposalData = {
-      idProposal: Sanitizer.sanitizeInput(requestData.idProposal),
-    };
+  generateKey() {
+    return randomUUID();
   }
 }
-
-module.exports = { ChatHandler };
+const chatHandler = new ChatHandler(dbHandler);
+module.exports = { chatHandler };

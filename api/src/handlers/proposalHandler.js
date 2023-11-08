@@ -13,10 +13,14 @@ class ProposalHandler {
     }
     return false;
   }
+  rejectProposal(proposalId) {
+    this.listOfProposal = this.listOfProposal.filter((element) => {
+      return element.proposalId != proposalId;
+    });
+    return true;
+  }
   acceptProposal(proposalId) {
-    const proposal = this.listOfProposal.find(
-      (p) => p.proposalId == proposalId
-    );
+    const proposal = this.listOfProposal.find((p) => p.proposalId == proposalId);
     if (proposal) {
       proposal.status = "ACCEPT";
       return true;
@@ -24,11 +28,7 @@ class ProposalHandler {
     return false;
   }
   existProposal(originUser, destUser) {
-    const proposalFind = this.listOfProposal.find(
-      (pro) =>
-        (pro.originUser == originUser && pro.destUser == destUser) ||
-        (pro.originUser == destUser && pro.destUser == originUser)
-    );
+    const proposalFind = this.listOfProposal.find((pro) => (pro.originUser == originUser && pro.destUser == destUser) || (pro.originUser == destUser && pro.destUser == originUser));
 
     return proposalFind == undefined ? false : true;
   }

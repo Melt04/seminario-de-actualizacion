@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `access-control`.`members` (
   `id_user` INT NOT NULL,
   `id_group` INT NOT NULL,
   PRIMARY KEY (`id_user`, `id_group`),
-  INDEX `group_id_idx` (`id_group` ASC) VISIBLE,
+  
   CONSTRAINT `user_id_members`
     FOREIGN KEY (`id_user`)
     REFERENCES `access-control`.`users` (`id`)
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `access-control`.`group_access` (
   `id_group` INT NOT NULL,
   `id_access` INT NOT NULL,
   PRIMARY KEY (`id_group`, `id_access`),
-  INDEX `access_id_ref_idx` (`id_access` ASC) VISIBLE,
+  
   CONSTRAINT `group_id_group_access`
     FOREIGN KEY (`id_group`)
     REFERENCES `access-control`.`groups` (`id`)
@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `access-control`.`access_resources` (
   `id_resource` INT NOT NULL,
   `id_access` INT NOT NULL,
   PRIMARY KEY (`id_resource`, `id_access`),
-  INDEX `access_id_ref_idx` (`id_access` ASC) VISIBLE,
+  
   CONSTRAINT `resource_id_access_resources`
     FOREIGN KEY (`id_resource`)
     REFERENCES `access-control`.`resources` (`id`)
