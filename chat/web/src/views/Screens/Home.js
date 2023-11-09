@@ -18,6 +18,7 @@ class Home extends HTMLElement {
     this.changeStateButton = new Button("CAMBIO");
     this.modalWindow.setMessage("Hello, World!");
     this.modalWindow.setModalTitle("Modal Title");
+    /* document.addEventListener("user-register", () => ); */
   }
 
   connectedCallback() {
@@ -39,7 +40,7 @@ class Home extends HTMLElement {
   changeStateLogin() {}
   enabled() {
     /* this.appendChild(this.chat); */
-    this.appendChild(this.SignUpForm);
+    /* this.appendChild(this.SignUpForm); */
 
     /* this.appendChild(this.SignInForm); */
     this.appendChild(this.changeStateButton);

@@ -17,11 +17,11 @@ class Application extends HTMLElement {
     this.chatContainer = new ChatContainer();
     this.chatContainerModel = new ChatContainerModel();
     this.chatContainerController = new ChatContainerController(this.chatContainer, this.chatContainerModel);
+    document.addEventListener("user-register", () => this.onChangeRegister());
   }
 
   connectedCallback() {
-    this.append(this.home);
-
+    /* this.append(this.home); */
     /* this.append(this.chatContainer);
     this.chatContainerController.init(); */
     /* setTimeout(() => {
@@ -30,6 +30,11 @@ class Application extends HTMLElement {
       this.appendChild(this.unlogedNavBar);
       this.setCallbacks();
     }, 2500); */
+    this.append(this.chatContainer);
+    this.chatContainerController.init();
+  }
+  onChangeRegister() {
+    this.replaceChild(this.chatContainer, this.home);
   }
 
   /*   setCallbacks() {

@@ -16,7 +16,6 @@ class ChatContainer extends HTMLElement {
     this.append(this.userList);
     document.addEventListener("update-user-list", (event) => {
       const users = event.detail.users;
-      console.log(users);
       this.userList.setUsers(users);
     });
   }

@@ -6,7 +6,8 @@ class SignUpController {
     this.view.registerButton.addEventListener("click", async () => {
       const userData = this.getDataFromView();
       console.log(userData);
-      const data = await this.model.signUpUser({ ...userData });
+      await this.model.signUpUser({ ...userData });
+      document.dispatchEvent(new CustomEvent("user-register"));
     });
   }
   getDataFromView() {

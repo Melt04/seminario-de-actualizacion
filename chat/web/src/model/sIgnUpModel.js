@@ -11,7 +11,6 @@ class SignUpModel {
       const response = await fetch("http://localhost:8000/users", { method: "POST", body: jsonBody });
       const userId = response.headers.get("x-user-id");
       localStorage.setItem("x-user-id", userId);
-
       const responseJson = await response.json();
 
       if (responseJson.error) {
