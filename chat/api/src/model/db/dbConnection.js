@@ -6,7 +6,6 @@ class DataBaseHandler {
   }
 
   async connect(host, port, user, password, db) {
-    console.log("connect");
     this.connection = mysql.createConnection({
       host,
       port,
@@ -30,6 +29,7 @@ class DataBaseHandler {
 
   async query(params) {
     return new Promise((resolve, reject) => {
+      console.log(params);
       this.connection.query(params, (error, queryResults) => {
         if (error) {
           console.error("Erorr while executing query", error);

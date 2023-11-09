@@ -151,6 +151,7 @@ ELSE
 END IF;
 	set lastId=LAST_INSERT_ID();
 	insert into members(id_user,id_group) values (lastId,1);
+  SET userId = lastId;
 	COMMIT;
 
 END;

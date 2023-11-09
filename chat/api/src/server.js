@@ -12,8 +12,10 @@ class ServerHandler {
       res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE,OPTIONS");
       res.setHeader("Access-Control-Allow-Headers", "*");
       res.setHeader("Access-Control-Allow-Credentials", true);
+      res.setHeader("Access-Control-Expose-Headers", "x-user-id");
       if (req.method === "OPTIONS") {
-        res.writeHead(204, this.headers);
+        console.log("OPTIONS");
+        res.writeHead(204);
         res.end();
         return;
       }

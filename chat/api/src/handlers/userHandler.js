@@ -5,17 +5,12 @@ class UserHandler {
   async create(userData) {
     const { name, lastName, status, email, password } = userData;
     try {
-      const query = `'${name}','${lastName}','${email}','${password}', ${status ? `,'${status}` : ",null"}'`;
-      const data = await this.db.query(
-        /* `CALL createUser('${name}','${lastName}')` 
-        CREATE PROCEDURE  createUser(in name varchar(45),in last_name varchar(45), in email varchar(45),in password varchar(100),in status varchar(45))
-        
-        */
-        `CALL createUser(${query})`
-      );
-      return true;
+      /* const query = `'${name}','${lastName}','${email}','${password}' ${status ? `,'${status}` : ",null"}','@userId'`;
+      const data = await this.db.query(`CALL createUser(${query})`); */
+      const query = `'${name}','${lastName}','${email}','${password}'${status ? `,'${status}'` : ",null"}, @userId`;
+      const data = await this.db.query(`CALL createUser(${query})`);
+      return data;
     } catch (e) {
-      console.log(e);
       return false;
     }
   }
