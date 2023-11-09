@@ -4,13 +4,27 @@ class ChatContainerController {
     this.model = model;
     this.proposal = null;
     this.chatId = null;
+    this.key = null;
   }
   async init() {
     this.view.button.addEventListener("click", async () => this.getUserList());
+    this.view.chat.addEventListener("send-message", async (d) => {
+      await this.sendMessage(d.detail.message);
+    });
+
     this.intervalGetMessages = setInterval(async () => {
       if (this.chatId != null) {
-        const message = await this.getMessages(this.chatId);
-        this.view.chat.paintMessages(message);
+        const messageResponse = await this.getMessages(this.chatId);
+        const messages = messageResponse.messages;
+
+        this.key = messageResponse.key;
+        if (!this.send) {
+          this.send = true;
+        }
+
+        if (messageResponse && messages.length > 0) {
+          this.view.chat.paintMessages(messages);
+        }
       }
     }, 5000);
     this.intervalGetProposal = setInterval(async () => {
@@ -19,8 +33,8 @@ class ChatContainerController {
     const users = await this.getUserList();
   }
   async getMessages(chatId) {
-    const data = await this.model.getMessages(chatId);
-    console.log(data);
+    const data = await this.model.getMessages(chatId, this.key);
+    return data;
   }
   async getMessageProposal(userId) {
     const data = await this.model.getMessageProposal(userId);
@@ -48,8 +62,10 @@ class ChatContainerController {
         },
       })
     );
-    console.log(event);
     return data;
+  }
+  async sendMessage(message) {
+    await this.model.sendMessage(message, this.chatId, this.key);
   }
 }
 

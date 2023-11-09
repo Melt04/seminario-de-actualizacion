@@ -20,13 +20,14 @@ USE `access-control` ;
 CREATE TABLE IF NOT EXISTS `access-control`.`users` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(200) NOT NULL,
   `last_name` VARCHAR(45) NOT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT NOW(),
   `updated_at` TIMESTAMP NOT NULL DEFAULT NOW(),
   `status` VARCHAR(45) NOT NULL DEFAULT 'ACTIVE',
   PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
+	ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `access-control`.`groups`
@@ -48,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `access-control`.`members` (
   `id_user` INT NOT NULL,
   `id_group` INT NOT NULL,
   PRIMARY KEY (`id_user`, `id_group`),
-  INDEX `group_id_idx` (`id_group` ASC) VISIBLE,
+  
   CONSTRAINT `user_id_members`
     FOREIGN KEY (`id_user`)
     REFERENCES `access-control`.`users` (`id`)
@@ -90,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `access-control`.`group_access` (
   `id_group` INT NOT NULL,
   `id_access` INT NOT NULL,
   PRIMARY KEY (`id_group`, `id_access`),
-  INDEX `access_id_ref_idx` (`id_access` ASC) VISIBLE,
+  
   CONSTRAINT `group_id_group_access`
     FOREIGN KEY (`id_group`)
     REFERENCES `access-control`.`groups` (`id`)
@@ -111,7 +112,6 @@ CREATE TABLE IF NOT EXISTS `access-control`.`access_resources` (
   `id_resource` INT NOT NULL,
   `id_access` INT NOT NULL,
   PRIMARY KEY (`id_resource`, `id_access`),
-  INDEX `access_id_ref_idx` (`id_access` ASC) VISIBLE,
   CONSTRAINT `resource_id_access_resources`
     FOREIGN KEY (`id_resource`)
     REFERENCES `access-control`.`resources` (`id`)
@@ -121,8 +121,7 @@ CREATE TABLE IF NOT EXISTS `access-control`.`access_resources` (
     FOREIGN KEY (`id_access`)
     REFERENCES `access-control`.`access` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    ON UPDATE NO ACTION)ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Store Procedures 
@@ -141,14 +140,14 @@ DROP PROCEDURE IF EXISTS activeUser;
 DROP PROCEDURE IF EXISTS selectUserById;
 DELIMITER //
 //
-CREATE PROCEDURE  createUser(in name varchar(45),in last_name varchar(45),in status varchar(45))
+CREATE PROCEDURE  createUser(in name varchar(45),in last_name varchar(45), in email varchar(45),in password varchar(100),in status varchar(45))
 BEGIN
 DECLARE lastId INT DEFAULT 0;
 START TRANSACTION;
 if isnull(status) THEN
-	insert into users(name, last_name) values(name,last_name);
+	insert into users(name, last_name,password,email) values(name,last_name,password,email);
 ELSE
-	insert into users(name, last_name,status) values(name,last_name,status);
+	insert into users(name, last_name,password,email,status) values(name,last_name,password,email,status);
 END IF;
 	set lastId=LAST_INSERT_ID();
 	insert into members(id_user,id_group) values (lastId,1);
@@ -223,13 +222,13 @@ END
 //
 CREATE PROCEDURE  selectAllMembersForGroup(in id_group_in int)
 BEGIN
-select u.name,u.last_name,u.id as user_id,g.id as id_group,g.name as group_name from members m inner join users u  on m.id_user=u.id inner join groups g on m.id_group=g.id where id_group=id_group_in;
+select * from members where id_group=id_group_in;
 END
 
 //
 CREATE PROCEDURE  selectAllMembers()
 BEGIN
-select  u.name,u.last_name,u.id as user_id,g.id as id_group,g.name as group_name from members m  inner join users u  on m.id_user=u.id  inner join groups g on m.id_group=g.id;
+select * from members;
 END
 
 //

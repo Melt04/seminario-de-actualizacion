@@ -26,7 +26,6 @@ class ChatApp extends HTMLElement {
     chatContainer.appendChild(sendButton);
     this.append(chatContainer);
   }
-
   setupEventListeners() {
     const sendButton = document.querySelector("#send-button");
     sendButton.addEventListener("click", () => this.sendMessage());
@@ -40,7 +39,6 @@ class ChatApp extends HTMLElement {
     this.querySelector(".chat-messages").appendChild(messageDiv);
     messageInput.value = "";
   }
-
   sendMessage() {
     const messageInput = this.querySelector("#message-input");
     const message = messageInput.value;
@@ -51,6 +49,13 @@ class ChatApp extends HTMLElement {
       messageDiv.textContent = message;
       this.querySelector(".chat-messages").appendChild(messageDiv);
       messageInput.value = "";
+      const event = this.dispatchEvent(
+        new CustomEvent("send-message", {
+          detail: {
+            message: message,
+          },
+        })
+      );
     }
   }
 

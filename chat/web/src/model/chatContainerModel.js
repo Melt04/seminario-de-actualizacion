@@ -1,9 +1,26 @@
 class ChatContainerModel {
   constructor() {}
-  async getMessages(chatId) {
-    const response = await fetch(`http://localhost:8000/chats/message/${chatId}`);
+  async getMessages(chatId, key) {
+    const response = await fetch(`http://localhost:8000/chats/message/${chatId}`, { headers: { "x-user-id": 1 } });
     const jsonResponse = await response.json();
-    return jsonResponse;
+    console.log(jsonResponse);
+    const decrypMessage = [];
+    jsonResponse.messages.forEach((m) => {
+      const dm = this.decryptText(m, key);
+      decrypMessage.push(dm);
+    });
+    return { messages: decrypMessage, key: jsonResponse.key };
+  }
+  async sendMessage(message, chatId, key) {
+    const cryptedMessage = this.encryptText(message, key);
+    const payload = {
+      chatId,
+      message: cryptedMessage,
+    };
+
+    const response = await fetch(`http://localhost:8000/chats/message`, { method: "POST", body: JSON.stringify(payload) });
+    const responseJson = await response.json();
+    console.log(responseJson);
   }
   async getMessageProposal(userId) {
     const responseProposal = await fetch(`http://localhost:8000/proposal/${userId}`);
@@ -21,16 +38,18 @@ class ChatContainerModel {
       console.log(e);
     }
   }
-  encryptText(secretKey, text) {
+  encryptText(text, secretKey) {
+    console.log(text);
+    console.log(secretKey);
     const encryptedText = CryptoJS.AES.encrypt(text, secretKey).toString();
     console.log(encryptedText);
     return encryptedText;
   }
 
-  decryptText(secretKey, text) {
+  decryptText(text, secretKey) {
     const decryptedBytes = CryptoJS.AES.decrypt(text, secretKey);
     const decryptedText = decryptedBytes.toString(CryptoJS.enc.Utf8);
-    console.log(decryptedText);
+    return decryptedText;
   }
 }
 

@@ -20,9 +20,10 @@ class Application extends HTMLElement {
   }
 
   connectedCallback() {
-    this.append(this.chatContainer);
-    this.chatContainerController.init();
+    this.append(this.home);
 
+    /* this.append(this.chatContainer);
+    this.chatContainerController.init(); */
     /* setTimeout(() => {
       this.removeChild(loader);
       this.unlogedNavBarController.enable();

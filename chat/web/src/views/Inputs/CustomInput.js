@@ -22,11 +22,11 @@ class CustomInput extends HTMLElement {
   }
 
   getValue() {
-    return this.input.input.value;
+    return this.input.value;
   }
 
   setValue(value) {
-    this.input.input.value = value;
+    this.input.value = value;
   }
 
   setReadonly(value) {

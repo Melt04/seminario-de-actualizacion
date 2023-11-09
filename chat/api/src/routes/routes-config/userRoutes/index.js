@@ -9,15 +9,16 @@ const userHandler = new UserHandler(dbHandler);
 const userCreateRoute = new Route("POST", new RegExp("^/users$"), async (req, res) => {
   try {
     body = await getBodyFromRequest(req);
-    if (!body?.name || !body?.last_name) {
+    if (!body?.name || !body?.lastName || !body?.password || !body?.email) {
       res.statusCode = 400;
-      console.log("here");
       res.write(JSON.stringify({ message: "Missing data", error: true }));
       return res.end();
     }
     const user = new User({
       name: body.name,
       lastName: body.last_name,
+      email: body.email,
+      password: body.password,
       status: body?.status,
     });
     const result = await userHandler.create(user);
