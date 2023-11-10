@@ -58,6 +58,13 @@ class ChatApp extends HTMLElement {
       );
     }
   }
+  disconnectedCallback() {
+    this.childNodes.forEach((n, index) => {
+      console.log(index);
+      console.log(n);
+      this.removeChild(n);
+    });
+  }
 
   receiveMessage(message) {
     const messageDiv = document.createElement("div");

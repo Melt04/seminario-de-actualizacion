@@ -19,6 +19,7 @@ class ChatContainer extends HTMLElement {
       this.userList.setUsers(users);
     });
   }
+  disconnectedCallback() {}
 }
 
 customElements.define("chat-container", ChatContainer);

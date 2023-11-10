@@ -2,9 +2,9 @@ class NavbarComponent extends HTMLElement {
   constructor() {
     super();
     this.loginButton = document.createElement("button");
-    this.loginButton.textContent = "Register";
+    this.loginButton.textContent = "Login";
     this.loginButton.id = "loginBtn";
-    this.loginButton.setAttribute("state", "register");
+    this.loginButton.setAttribute("state", "login");
   }
   connectedCallback() {
     this.render();

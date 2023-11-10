@@ -1,33 +1,37 @@
 import { SignUpForm } from "../Forms/SignUpForm.js";
 import { SignInForm } from "../Forms/SignInForm.js";
-import { Button } from "../Buttons/Button.js";
-
-import { SignInController } from "../../controller/signInController.js";
 import { SignUpModel } from "../../model/sIgnUpModel.js";
 import { SignUpController } from "../../controller/signUpController.js";
+import { LoginController } from "../../controller/loginController.js";
+import { LoginModel } from "../../model/loginModel.js";
 
 class Home extends HTMLElement {
   constructor() {
     super();
-
     this.SignUpForm = new SignUpForm();
     this.signUpModel = new SignUpModel();
     this.signUpController = new SignUpController(this.SignUpForm, this.signUpModel);
-    this.SignInForm = new SignInForm();
+    this.signInForm = new SignInForm();
+    this.signInModel = new LoginModel();
+    this.signInController = new LoginController(this.signInForm, this.signInModel);
+    this.signInController.getInputValues();
   }
   connectedCallback() {
+    console.log("connected");
     this.enabled();
   }
 
   disconnectedCallback() {
     this.disabled();
+    this.childNodes.forEach((n) => {
+      this.removeChild(n);
+    });
   }
   changeState(state) {
     if (state == "login") {
-      this.replaceChild(this.SignInForm, this.SignUpForm);
-    }
-    if (state == "register") {
-      this.replaceChild(this.SignUpForm, this.SignInForm);
+      this.replaceChild(this.SignUpForm, this.signInForm);
+    } else if (state == "register") {
+      this.replaceChild(this.signInForm, this.SignUpForm);
     }
   }
   enabled() {

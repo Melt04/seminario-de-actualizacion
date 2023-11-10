@@ -9,7 +9,7 @@ class UserHandler {
     let { name, lastName, status, email, password } = userData;
     try {
       let passwordEncypted = encrypt(password);
-      const query = `'${name}','${lastName}','${email}','${passwordEncypted}'${status ? `,'${status}'` : ",null"}, @userId`;
+      const query = `'${name}','${lastName}','${email}','${passwordEncypted}','ACTIVE', @userId`;
       const data = await this.db.query(`CALL createUser(${query})`);
       return data;
     } catch (e) {

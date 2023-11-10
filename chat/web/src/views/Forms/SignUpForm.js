@@ -70,6 +70,7 @@ class SignUpForm extends HTMLElement {
   }
 
   disconnectedCallback() {
+    console.log("signup disconect");
     this.registerButton.disconnectedCallback();
   }
 }

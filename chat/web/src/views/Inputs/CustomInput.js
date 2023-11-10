@@ -1,7 +1,7 @@
 class CustomInput extends HTMLElement {
   constructor(labelName, required, placeholder = "escribe algo", type = "text") {
     super();
-    this.classList.add("coolinput");
+    this.classList.add("custominput");
     this.label = document.createElement("label");
     this.input = document.createElement("input");
     this.input.placeholder = placeholder;
@@ -17,7 +17,7 @@ class CustomInput extends HTMLElement {
     this.appendChild(this.label);
     this.appendChild(this.input);
     let style = document.createElement("style");
-    /* style.innerText = `@import './style/Input.css';`; */
+
     this.appendChild(style);
   }
 

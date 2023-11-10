@@ -5,6 +5,12 @@ class ChatContainerController {
     this.proposal = null;
     this.chatId = null;
     this.key = null;
+    this.intervalGetProposal = null;
+    this.intervalGetMessages = null;
+    document.addEventListener("log-out", () => {
+      clearInterval(this.intervalGetMessages);
+      clearInterval(this.intervalGetProposal);
+    });
   }
   async init() {
     this.view.button.addEventListener("click", async () => this.getUserList());

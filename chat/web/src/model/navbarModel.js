@@ -1,7 +1,21 @@
 class NavbarModel {
-  constructor() {}
-  changeState(state) {
-    return state == "login" ? "register" : "login";
+  constructor() {
+    this.appState = "logoff";
+    this.buttonState = "login";
+  }
+  changeButtonState() {
+    if (this.appState == "logoff") {
+      this.buttonState = this.buttonState == "login" ? "register" : "login";
+    }
+  }
+  changeAppState(newState) {
+    this.appState = newState;
+  }
+  getAppState() {
+    return this.appState;
+  }
+  getButtonState() {
+    return this.buttonState;
   }
 }
 

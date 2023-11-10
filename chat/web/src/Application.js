@@ -28,6 +28,16 @@ class Application extends HTMLElement {
       this.onChangeRegister();
       this.chatContainerController.init();
     });
+    document.addEventListener("user-loged", () => {
+      this.state = "logged";
+      this.onChangeRegister();
+      this.chatContainerController.init();
+    });
+    document.addEventListener("log-out", () => {
+      this.state = "logout";
+      localStorage.clear("x-session-token");
+      this.replaceChild(this.home, this.chatContainer);
+    });
   }
 
   connectedCallback() {
