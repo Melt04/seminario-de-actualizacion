@@ -137,10 +137,11 @@ DROP PROCEDURE IF EXISTS createUser;
 DROP PROCEDURE IF EXISTS selectAllUsers;
 DROP PROCEDURE IF EXISTS disableUser;
 DROP PROCEDURE IF EXISTS activeUser;
+DROP PROCEDURE IF EXISTS loginUser;
 DROP PROCEDURE IF EXISTS selectUserById;
 DELIMITER //
 //
-CREATE PROCEDURE  createUser(in name varchar(45),in last_name varchar(45), in email varchar(45),in password varchar(100),in status varchar(45))
+CREATE PROCEDURE  createUser(in name varchar(45),in last_name varchar(45), in email varchar(45),in password varchar(100),in status varchar(45), OUT userId INT)
 BEGIN
 DECLARE lastId INT DEFAULT 0;
 START TRANSACTION;
@@ -151,14 +152,21 @@ ELSE
 END IF;
 	set lastId=LAST_INSERT_ID();
 	insert into members(id_user,id_group) values (lastId,1);
-  SET userId = lastId;
+    SET userId = lastId;
 	COMMIT;
+    SELECT lastId AS userId,email;
 
 END;
 //
 CREATE PROCEDURE  selectUserById(in id_in int)
 BEGIN
 select * from users where id=id_in;
+END
+//
+//
+CREATE PROCEDURE  loginUser(in email_in varchar(45) ,in password_in varchar(100))
+BEGIN
+select id,email from users where email=email_in and password=password_in;
 END
 //
 CREATE PROCEDURE  selectAllUsers()
@@ -368,12 +376,15 @@ delete from access_resources where id_resource=  id_resource_in  and id_access=i
 
 END
 
-
 //
+
+
 
 call createGroup('guest');
 call createAccess('basic');
 call assingAccessToGroup(1,1);
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

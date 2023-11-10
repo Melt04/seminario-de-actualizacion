@@ -20,7 +20,8 @@ class Application extends HTMLElement {
   }
 
   connectedCallback() {
-    this.append(this.home);
+    this.append(this.chatContainer);
+    this.chatContainerController.init();
   }
   onChangeRegister() {
     this.replaceChild(this.chatContainer, this.home);

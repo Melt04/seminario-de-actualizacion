@@ -1,5 +1,5 @@
 const { RouteHandler } = require("../class/RouteHandler");
-const { getAllUsers, userCreateRoute, getUserById } = require("./userRoutes");
+const { getAllUsers, userCreateRoute, getUserById, loginUserRoute } = require("./userRoutes");
 const { getAllGroups, groupCreateRoute, gerGroupById } = require("./groupRoutes");
 const { accessCreateRoute, getAccessById, getAllAccess } = require("./accessRoutes");
 const { getAllResources, getResourceById, resourceCreateRoute } = require("./resourcesRoutes");
@@ -34,6 +34,7 @@ const routesHandler = new RouteHandler([
   sendMessageRoute,
   getMessagesRoutes,
   postRejectProposal,
+  loginUserRoute,
 ]);
 
 module.exports = { routesHandler };

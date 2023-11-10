@@ -8,7 +8,9 @@ const dbHandler = require("./model/db/dbConnection");
 const { DB_HOST, DB_USER, DB_PASSWORD, DB_SCHEMA, SERVER_PORT } = process.env;
 
 const { ServerHandler } = require("./server");
-const server = new ServerHandler(dbHandler);
+const { SessionHandler } = require("./handlers/sessionHandler");
+const sessionHandler = new SessionHandler(dbHandler);
+const server = new ServerHandler(sessionHandler);
 
 dbHandler
   .connect(DB_HOST, "3306", DB_USER, DB_PASSWORD, DB_SCHEMA)

@@ -5,8 +5,8 @@ const { ExecuteRoute } = require("./routes/class/ExecuteRoute");
 const { routesHandler } = require("./routes/routes-config/routes.config");
 
 class ServerHandler {
-  constructor(db) {
-    this.db = db;
+  constructor(sessionHandler) {
+    this.sessionHandler = sessionHandler;
   }
   start(port) {
     const server = http.createServer(async (req, res) => {
@@ -15,28 +15,28 @@ class ServerHandler {
       res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE,OPTIONS");
       res.setHeader("Access-Control-Allow-Headers", "*");
       res.setHeader("Access-Control-Allow-Credentials", true);
-      res.setHeader("Access-Control-Expose-Headers", "x-user-id");
+      res.setHeader("Access-Control-Expose-Headers", "x-session-token");
       if (req.method === "OPTIONS") {
         res.writeHead(204);
         res.end();
         return;
       }
       const routeFounded = routesHandler.getRoute(req.url, req.method);
-      if (!routeFounded.validate) {
+      if (routeFounded.validate) {
         const sessionToken = req.headers["x-session-token"];
-        if (!sessionToken) {
+        try {
+          const sessionResponse = await this.sessionHandler.validateSession(sessionToken);
+          if (sessionResponse.error) {
+            res.writeHead(403);
+            res.write(JSON.stringify({ message: sessionResponse.message, error: true }));
+            return res.end();
+          }
+          req.userId = sessionResponse.userId;
+        } catch (e) {
           res.writeHead(403);
-          res.write(JSON.stringify({ message: "Missing token", error: true }));
+          res.write(JSON.stringify({ message: "Invalid Token", error: true }));
           return res.end();
         }
-        const found = await this.validateUserToken(sessionToken);
-        if (found.length <= 0) {
-          res.writeHead(403);
-          res.write(JSON.stringify({ message: "invalid token", error: true }));
-          return res.end();
-        }
-
-        req.userId = found[0].id;
       }
 
       if (routeFounded) {
@@ -54,15 +54,6 @@ class ServerHandler {
     server.listen(port, () => {
       console.log(`Server is running on http://localhost:${port}`);
     });
-  }
-  async validateUserToken(userid) {
-    try {
-      const data = await this.db.query(`CALL selectUserById (${userid})`);
-      return data[0];
-    } catch (e) {
-      console.log(e);
-      throw e;
-    }
   }
 }
 
