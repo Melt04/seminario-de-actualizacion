@@ -22,7 +22,7 @@ class ServerHandler {
         return;
       }
       const routeFounded = routesHandler.getRoute(req.url, req.method);
-      if (routeFounded.validate) {
+      if (routeFounded && routeFounded.validate) {
         const sessionToken = req.headers["x-session-token"];
         try {
           const sessionResponse = await this.sessionHandler.validateSession(sessionToken);

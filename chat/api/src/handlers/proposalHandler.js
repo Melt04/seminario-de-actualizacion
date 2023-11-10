@@ -36,7 +36,9 @@ class ProposalHandler {
     return this.listOfProposal.find((p) => p.proposalId == id);
   }
   getProposalByUser(user) {
-    return this.listOfProposal.find((p) => p.originUser == user);
+    console.log(user);
+    console.log(this.listOfProposal);
+    return this.listOfProposal.find((p) => p.destUser == user);
   }
 }
 

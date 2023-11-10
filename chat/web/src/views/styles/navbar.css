@@ -1,0 +1,34 @@
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+.navbar {
+    background-color: #333;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+navbar-component{
+    width: 100%;
+}
+.logo h1 {
+    margin: 0;
+    color: #fff;
+}
+
+.nav-links a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 15px;
+}
+
+.login button {
+    color: #fff;
+    background-color: #4CAF50;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}

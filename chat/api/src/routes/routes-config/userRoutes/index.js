@@ -2,7 +2,7 @@ const UserHandler = require("../../../handlers/userHandler");
 const dbHandler = require("../../../model/db/dbConnection");
 const Route = require("../../class/Route");
 const User = require("../../../model/entities/users");
-const { getBodyFromRequest } = require("../../../utils");
+const { getBodyFromRequest, decrypt } = require("../../../utils");
 const { SessionHandler } = require("../../../handlers/sessionHandler");
 
 const userHandler = new UserHandler(dbHandler);

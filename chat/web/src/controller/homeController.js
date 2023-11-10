@@ -2,27 +2,13 @@ class HomeController {
   constructor(view, model) {
     this.view = view;
     this.model = model;
-    this.view.changeStateButton.addEventListener("click", () => {
-      this.changeState();
+    this.state = "register";
+    document.addEventListener("change-state", ({ detail }) => {
+      this.view.changeState(detail);
     });
   }
 
-  changeState() {
-    const state = this.model.getState();
-    if (state == "signin") {
-      this.model.changeState("login");
-      const stateChangeEvent = new CustomEvent("stateChange", {
-        detail: { newState: "login" },
-      });
-      document.dispatchEvent(stateChangeEvent);
-    } else {
-      this.model.changeState("signin");
-      const stateChangeEvent = new CustomEvent("stateChange", {
-        detail: { newState: "signin" },
-      });
-      document.dispatchEvent(stateChangeEvent);
-    }
-  }
+  changeState() {}
 }
 
 export { HomeController };

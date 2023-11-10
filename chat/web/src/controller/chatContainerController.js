@@ -38,15 +38,13 @@ class ChatContainerController {
   }
   async getMessageProposal(userId) {
     const data = await this.model.getMessageProposal(userId);
-    const proposal = data.responseData;
-    if (proposal && this.proposal === null) {
-      const response = confirm(`Usted tiene una propuesta de mensaje = ${proposal.proposalId} `);
+    const proposal = data?.responseData;
+    if (proposal && Object.keys(proposal).length > 0 && this.proposal === null) {
+      const response = confirm(`Usted tiene una propuesta de mensaje `);
       if (response) {
-        const responseAcceptProposal = await fetch(`http://localhost:8000/proposal/accept/${proposal.proposalId}`, { method: "POST" });
-        const jsonAcceptProposal = await responseAcceptProposal.json();
-
+        const chatId = await this.model.acceptProposal(proposal.proposalId);
         this.proposal = proposal.proposalId;
-        this.chatId = jsonAcceptProposal.chatId;
+        this.chatId = chatId;
       } else {
         await fetch(`http://localhost:8000/proposal/reject/${proposal.proposalId}`, { method: "POST" });
         alert("proposal was rejected");

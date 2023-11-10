@@ -1,7 +1,8 @@
 class ChatContainerModel {
   constructor() {}
   async getMessages(chatId, key) {
-    const response = await fetch(`http://localhost:8000/chats/message/${chatId}`, { headers: { "x-user-id": 1 } });
+    const token = localStorage.getItem("x-session-token");
+    const response = await fetch(`http://localhost:8000/chats/message/${chatId}`, { headers: { "x-session-token": token } });
     const jsonResponse = await response.json();
     console.log(jsonResponse);
     const decrypMessage = [];
@@ -17,22 +18,35 @@ class ChatContainerModel {
       chatId,
       message: cryptedMessage,
     };
-
     const response = await fetch(`http://localhost:8000/chats/message`, { method: "POST", body: JSON.stringify(payload) });
     const responseJson = await response.json();
     console.log(responseJson);
   }
   async getMessageProposal(userId) {
-    const responseProposal = await fetch(`http://localhost:8000/proposal/${userId}`);
+    const token = localStorage.getItem("x-session-token");
+    const responseProposal = await fetch(`http://localhost:8000/proposal/me`, { headers: { "x-session-token": token } });
     const responseJson = await responseProposal.json();
+    console.log(responseJson);
     return responseJson;
   }
+  async acceptProposal(proposalId) {
+    const token = localStorage.getItem("x-session-token");
+    const responseAcceptProposal = await fetch(`http://localhost:8000/proposal/accept/${proposalId}`, { method: "POST", headers: { "x-session-token": token } });
+    const jsonAcceptProposal = await responseAcceptProposal.json();
+    console.log(jsonAcceptProposal);
+
+    return {
+      chatId: jsonAcceptProposal.chatId,
+    };
+  }
+  async rejectProposal() {}
   async getUserList() {
     try {
-      const respose = await fetch("http://localhost:8000/users");
+      const token = localStorage.getItem("x-session-token");
+      const respose = await fetch("http://localhost:8000/users", { headers: { "x-session-token": token } });
       const userList = await respose.json();
-      if (userList) {
-        return userList.data;
+      if (userList && userList.filteredUsers) {
+        return userList.filteredUsers;
       }
     } catch (e) {
       console.log(e);

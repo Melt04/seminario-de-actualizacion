@@ -42,11 +42,11 @@ const getProposalById = new Route("GET", new RegExp("^/proposal/\\d+$"), async (
     res.end();
   }
 });
-const getProposalByUser = new Route("GET", new RegExp("^/proposal/user/\\d+$"), async (req, res) => {
+const getProposalByUser = new Route("GET", new RegExp("^/proposal/me$"), async (req, res) => {
   try {
-    const index = req.url.lastIndexOf("/");
-    const id = req.url.slice(index + 1);
-    const data = proposalHandler.getProposalByUser(id);
+    const userId = req.userId;
+    console.log(userId);
+    const data = proposalHandler.getProposalByUser(userId);
     const responseData = data != undefined ? data : [];
     res.write(JSON.stringify({ responseData, error: false }));
     res.end();

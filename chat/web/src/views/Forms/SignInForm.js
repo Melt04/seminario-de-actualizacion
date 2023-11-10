@@ -7,8 +7,8 @@ class SignInForm extends HTMLElement {
     super();
     this.classList.add("form-box");
     this.containerForm = document.createElement("div");
-    this.usernameInput = new CustomInput("Username", true, "write your username...", "text");
-    this.passwordInput = new CustomInput("Password", true, "write your password...", "password");
+    this.usernameInput = new CustomInput("Username", true, "Ingrese tu usuario...", "text");
+    this.passwordInput = new CustomInput("Password", true, "Ingresa tu contrasenia...", "password");
     this.containerForm.appendChild(this.usernameInput);
     this.containerForm.appendChild(this.passwordInput);
     this.loginButton = new Button("sign in", "bttn");

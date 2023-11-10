@@ -20,6 +20,7 @@ class UserHandler {
   async loginUser(email, password) {
     const encryptedPassword = encrypt(password);
     const result = await this.db.query(`CALL loginUser('${email}','${encryptedPassword}')`);
+    console.log(result);
     return result;
   }
 

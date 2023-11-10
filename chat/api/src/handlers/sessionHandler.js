@@ -23,6 +23,7 @@ class SessionHandler {
     const parsedDecryptedToken = JSON.parse(decryptedSessionToken);
     const userId = parsedDecryptedToken.userId;
     const found = await this.validateUserToken(userId);
+
     if (found.length <= 0) {
       return {
         error: true,
@@ -36,6 +37,8 @@ class SessionHandler {
   }
 
   async validateUserToken(userid) {
+    console.log("user");
+    console.log(userid);
     try {
       const data = await this.db.query(`CALL selectUserById (${userid})`);
       return data[0];
