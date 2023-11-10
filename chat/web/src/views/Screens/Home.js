@@ -18,7 +18,6 @@ class Home extends HTMLElement {
     this.changeStateButton = new Button("CAMBIO");
     this.modalWindow.setMessage("Hello, World!");
     this.modalWindow.setModalTitle("Modal Title");
-    /* document.addEventListener("user-register", () => ); */
   }
 
   connectedCallback() {
