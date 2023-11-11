@@ -21,7 +21,7 @@ const sendMessageRoute = new Route("POST", new RegExp("^/chats/message$"), async
     body = await getBodyFromRequest(req);
 
     const { chatId, message } = body;
-    const userId = req.headers["x-user-id"];
+    const userId = req.userId;
     if (!chatId || !message) {
       throw new Error("Failing data");
     }
@@ -44,8 +44,9 @@ const getMessagesRoutes = new Route("GET", new RegExp("^/chats/message/.*$"), as
   try {
     const index = req.url.lastIndexOf("/");
     const id = req.url.slice(index + 1);
-    const userId = req.headers["x-user-id"];
+    const userId = req.userId;
     const messages = chatHandler.getMessages(id, userId);
+
     res.write(JSON.stringify({ messages: messages.allMessages, key: messages.key, error: false }));
     res.end();
   } catch (e) {

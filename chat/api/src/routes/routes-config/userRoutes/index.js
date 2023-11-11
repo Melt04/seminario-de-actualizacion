@@ -44,6 +44,26 @@ const userCreateRoute = new Route(
   },
   false
 );
+
+const logOutUserRoute = new Route("POST", new RegExp("^/logout$"), async (req, res) => {
+  try {
+    const userId = req.userId;
+    const data = await userHandler.logOutUser(userId);
+    if (!data) {
+      res.statusCode = 403;
+      res.write(JSON.stringify({ message: "Cant close session", error: true }));
+      return res.end();
+    }
+    res.write(JSON.stringify({ message: "Logout Successfully", error: false }));
+    return res.end();
+  } catch (e) {
+    res.statusCode = 500;
+    console.log(e);
+    res.write(JSON.stringify({ message: "Failed to logtou", error: true }));
+    res.end();
+  }
+});
+
 const loginUserRoute = new Route(
   "POST",
   new RegExp("^/login$"),
@@ -113,4 +133,5 @@ module.exports = {
   userCreateRoute,
   getUserById,
   loginUserRoute,
+  logOutUserRoute,
 };

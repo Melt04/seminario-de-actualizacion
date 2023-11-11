@@ -32,12 +32,14 @@ class ChatHandler {
     if (chatFound) {
       const allMessages = [];
       chatFound.messages = chatFound.messages.filter((mess) => {
-        if (mess.userId == userId) {
+        if (mess.userId !== userId) {
           allMessages.push(mess.message);
           return false;
         }
         return true;
       });
+      console.log("chatFound");
+      console.log(chatFound);
 
       const key = chatFound.key;
       return { allMessages, key };

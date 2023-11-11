@@ -23,6 +23,11 @@ class UserHandler {
     console.log(result);
     return result;
   }
+  async logOutUser(id) {
+    const result = await this.db.query(`CALL disableUser('${id}')`);
+
+    return result;
+  }
 
   update(id, data) {
     return this.repository.updateUser(id, { ...data });

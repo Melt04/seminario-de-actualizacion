@@ -28,6 +28,10 @@ class Application extends HTMLElement {
       this.onChangeRegister();
       this.chatContainerController.init();
     });
+
+    document.addEventListener("send-message", async (d) => {
+      console.log("doc");
+    });
     document.addEventListener("user-loged", () => {
       this.state = "logged";
       this.onChangeRegister();

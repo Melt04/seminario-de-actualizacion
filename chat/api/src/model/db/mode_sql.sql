@@ -166,7 +166,8 @@ END
 //
 CREATE PROCEDURE  loginUser(in email_in varchar(45) ,in password_in varchar(100))
 BEGIN
-select id,email from users where email=email_in and password=password_in;
+select id as userId ,email from users where email=email_in and password=password_in;
+update users set status='ACTIVE' where email=email_in;
 END
 //
 CREATE PROCEDURE  selectAllUsers()

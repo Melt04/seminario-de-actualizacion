@@ -7,11 +7,14 @@ const { getBodyFromRequest } = require("../../../utils");
 const proposalCreateRoute = new Route("POST", new RegExp("^/proposal$"), async (req, res) => {
   try {
     body = await getBodyFromRequest(req);
-    const { originUser, destUser } = body;
-    if (!originUser || !destUser) {
+    const userId = req.userId;
+    console.log(body);
+    const { destUser } = body;
+    if (!destUser) {
       throw new Error("Failing data");
     }
-    const respose = proposalHandler.addAProposal(originUser, destUser);
+    console.log(destUser);
+    const respose = proposalHandler.addAProposal(userId, destUser);
     if (!respose) {
       res.write(JSON.stringify({ message: "Proposal alredy exist", error: true }));
       res.end();

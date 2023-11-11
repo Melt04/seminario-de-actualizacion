@@ -17,9 +17,6 @@ class UserCard extends HTMLElement {
     lastnameParagraph.innerHTML = `<strong>Apellido:</strong> ${this.lastName}`;
     userCardContainer.appendChild(lastnameParagraph);
 
-    userCardContainer.addEventListener("click", () => {
-      alert(`ID del usuario: ${this.id}`);
-    });
     this.appendChild(userCardContainer);
   }
 }

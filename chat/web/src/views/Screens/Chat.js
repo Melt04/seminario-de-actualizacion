@@ -1,11 +1,15 @@
 class ChatApp extends HTMLElement {
   constructor() {
     super();
+    this.sendButton = document.createElement("button");
+    this.sendButton.id = "send-button";
+    this.sendButton.textContent = "Enviar";
   }
 
   connectedCallback() {
     this.render();
-    this.setupEventListeners();
+
+    document.addEventListener("enabled-button", () => {});
   }
 
   render() {
@@ -18,18 +22,16 @@ class ChatApp extends HTMLElement {
     messageInput.id = "message-input";
     messageInput.classList.add("message-input");
     messageInput.placeholder = "Escribe un mensaje";
-    const sendButton = document.createElement("button");
-    sendButton.id = "send-button";
-    sendButton.textContent = "Enviar";
+
     chatContainer.appendChild(chatMessages);
     chatContainer.appendChild(messageInput);
-    chatContainer.appendChild(sendButton);
+    chatContainer.appendChild(this.sendButton);
     this.append(chatContainer);
   }
-  setupEventListeners() {
+  /*  setupEventListeners() {
     const sendButton = document.querySelector("#send-button");
-    sendButton.addEventListener("click", () => this.sendMessage());
-  }
+    
+  } */
   paintMessages(message) {
     const messageInput = this.querySelector("#message-input");
     const messageDiv = document.createElement("div");
@@ -39,25 +41,7 @@ class ChatApp extends HTMLElement {
     this.querySelector(".chat-messages").appendChild(messageDiv);
     messageInput.value = "";
   }
-  sendMessage() {
-    const messageInput = this.querySelector("#message-input");
-    const message = messageInput.value;
-    if (message) {
-      const messageDiv = document.createElement("div");
-      messageDiv.classList.add("message");
-      messageDiv.classList.add("sent-message");
-      messageDiv.textContent = message;
-      this.querySelector(".chat-messages").appendChild(messageDiv);
-      messageInput.value = "";
-      const event = this.dispatchEvent(
-        new CustomEvent("send-message", {
-          detail: {
-            message: message,
-          },
-        })
-      );
-    }
-  }
+
   disconnectedCallback() {
     this.childNodes.forEach((n, index) => {
       console.log(index);

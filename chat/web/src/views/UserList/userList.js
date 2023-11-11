@@ -2,21 +2,9 @@ import { UserCard } from "../Cards/UserCard.js";
 class UserList extends HTMLElement {
   constructor() {
     super();
-    const userListContainer = document.createElement("div");
-    userListContainer.classList.add("user-list");
-    this.appendChild(userListContainer);
-  }
-  setUsers(users) {
-    this.innerHTML = "";
-    const userListContainer = document.createElement("div");
-    userListContainer.classList.add("user-list");
-    users.forEach((user) => {
-      const userCard = new UserCard(user);
-
-      userListContainer.appendChild(userCard);
-    });
-
-    this.appendChild(userListContainer);
+    this.userListContainer = document.createElement("div");
+    this.userListContainer.classList.add("user-list");
+    this.appendChild(this.userListContainer);
   }
 }
 
