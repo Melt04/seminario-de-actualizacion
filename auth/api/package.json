@@ -1,0 +1,29 @@
+{
+  "name": "seminario-de-actualizacion",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Melt04/seminario-de-actualizacion.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Melt04/seminario-de-actualizacion/issues"
+  },
+  "homepage": "https://github.com/Melt04/seminario-de-actualizacion#readme",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "dotenv": "^16.0.3",
+    "mysql": "^2.18.1"
+  }
+}
