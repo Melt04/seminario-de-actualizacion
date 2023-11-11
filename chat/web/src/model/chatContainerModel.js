@@ -47,7 +47,11 @@ class ChatContainerModel {
     const resposeCreateProposal = await fetch("http://localhost:8000/proposal", { method: "POST", headers: { "x-session-token": token }, body });
     const jsonCreateProposal = await resposeCreateProposal.json();
   }
-  async rejectProposal() {}
+  async rejectProposal(id) {
+    const token = localStorage.getItem("x-session-token");
+
+    await fetch(`http://localhost:8000/proposal/reject/${id}`, { method: "POST", headers: { "x-session-token": token } });
+  }
   async getUserList() {
     try {
       const token = localStorage.getItem("x-session-token");

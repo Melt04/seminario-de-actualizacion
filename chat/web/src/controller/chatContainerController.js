@@ -21,10 +21,12 @@ class ChatContainerController {
   }
   async init() {
     this.view.button.addEventListener("click", async () => this.getUserList());
+
     this.intervalGetMessages = setInterval(async () => {
       if (this.chatId != null) {
         const messageResponse = await this.getMessages(this.chatId);
         const messages = messageResponse.messages;
+
         this.key = messageResponse.key;
         if (!this.send) {
           this.send = true;
@@ -34,7 +36,7 @@ class ChatContainerController {
           this.view.chat.paintMessages(messages);
         }
       }
-    }, 1000);
+    }, 2000);
     this.intervalGetProposal = setInterval(async () => {
       await this.getMessageProposal();
     }, 2000);
@@ -54,7 +56,7 @@ class ChatContainerController {
         this.proposal = proposal.proposalId;
         this.chatId = resposeProposal.chatId;
       } else {
-        await fetch(`http://localhost:8000/proposal/reject/${proposal.proposalId}`, { method: "POST" });
+        await this.model.rejectProposal(proposal.proposalId);
         alert("proposal was rejected");
       }
     }
